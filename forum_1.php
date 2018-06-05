@@ -1,4 +1,46 @@
 <?
+function noregistration()
+{ // регистрация еще не пройдена, запрос имени и пароля
+global $monthes;
+global $sr;
+global $pb;
+global $searchfield;
+require( "forum_before.inc" );
+//  echo "регистрация еще не пройдена";
+print "
+<tr><td>
+<p class=menu><a class=m href=\"useradd.php\">Регистрация</a></p>
+</td></tr>
+<tr>
+<td bgcolor=#D5DCE2><img src=\"images/spacer.gif\" height=2></td>
+</tr>
+<tr><td>
+<p class=menu>Авторизация</p>
+</td></tr>
+<tr>
+<td bgcolor=#D5DCE2>
+<table cellpadding=2 cellspacing=2 border=0>
+<tr>
+<form name=enter action=forum.php method=post >
+<td align=right><p class=logpass>Имя:</td>
+<td><input style=\"font-size:9pt\" type=text name=inputlogin size=10></td>
+</tr><tr>
+<td><p class=logpass>Пароль:</td>
+<td><input style=\"font-size:9pt\" type=password name=inputpass size=10></td>
+</tr><tr>
+<td> &nbsp;</td>
+<td align=center><input style=\"font-size:9pt\" type=submit value=\"вход\" onClick=\"return CheckEnter()\"></td></form>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td bgcolor=#D5DCE2><img src=\"images/spacer.gif\" height=5></td>
+</tr>
+";
+require( "forum_after.inc" );
+}
+
 if( !$inlib ) { include( "lib.inc" ); db_connect(); }
 
 include("auto.inc");
