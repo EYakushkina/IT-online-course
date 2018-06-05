@@ -1,4 +1,83 @@
 <?
+function yesregistration($flf)
+{ // регистраци€ завершена успешно
+global $UserLogNum;
+global $UserIdCookie;
+global $StartT;
+global $flcreatelog;
+global $tabusers;
+global $tablog;
+global $id;
+global $inputlogin;
+global $pback;
+global $username;
+global $monthes;
+global $sr;
+global $pb;
+global $searchfield;
+$path = ""; require( $path."forum_before.inc" );
+
+
+// врем€ посещени€, число посещений... -> в Ѕƒ 
+$ut=$StartT; 
+$T = date( "Y-m-d  H:i:s", $ut );
+$var="REMOTE_ADDR";
+$ip=getenv($var);
+
+
+   // если действительно регистраци€, а не refresh страницы с регистрацией, 
+   // то обновл€ем число посещений в бд
+   $res  = db_query( "SELECT name,q_attantion from $tabusers where id=$id" );
+   list($username,$q_attantion) = db_fetch_row( $res );
+//   echo "прежнее число посещений= $q_attantion<br>";
+//echo "$flf <br>";
+if ( $flf == 1) {
+   $q_attantion = $q_attantion + 1;
+   $res  = db_query("update $tabusers set q_attantion='$q_attantion',last_date='$T', ip='$ip' where id=$id");
+}
+   if ($flcreatelog)
+   {
+   $res  = db_query("insert into $tablog values('$id','$T',0,0,'$ip',0)");
+   $UserLogNum = db_insert_id();   // номер записи в журнале
+   }
+   //echo "UserLogNum=".$UserLogNum;
+
+print "
+<tr><td bgcolor=#D5DCE2>
+<p class=logpass align=center>јвторизован<br>посетитель:<br><font color=#000000>$inputlogin</font></p>
+</td></tr>
+<tr>
+<td bgcolor=#D5DCE2><img src=\"images/spacer.gif\" height=5></td>
+</tr>
+<tr><td>
+<p class=menu><a class=m href=\"userupdate.php\">»зменение регистрационных данных</a></p>
+</td></tr>
+<tr>
+<td bgcolor=#D5DCE2><img src=\"images/spacer.gif\" height=2></td>
+</tr>
+<tr><td>
+<p class=menu><a class=m href=\"forum.php?out=1\">ќтмена авторизации</a></p>
+</td></tr>
+<tr>
+<td bgcolor=#D5DCE2><img src=\"images/spacer.gif\" height=2></td>
+</tr>
+";
+
+if ($UserIdCookie<2 )
+{
+print"
+<tr><td>
+<p class=menu><a class=m href=\"stat.php\">—татистика</a></p>
+</td></tr>
+<tr>
+<td bgcolor=#D5DCE2><img src=\"images/spacer.gif\" height=2></td>
+</tr>
+";
+}
+require( "forum_after.inc" );
+}
+
+
 if( !$inlib ) { include( "lib.inc" ); db_connect(); }
 
 include("auto.inc");
