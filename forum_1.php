@@ -1,35 +1,35 @@
 <?
 function noregistration()
-{ // регистрация еще не пройдена, запрос имени и пароля
+{ // СЂРµРіРёСЃС‚СЂР°С†РёСЏ РµС‰Рµ РЅРµ РїСЂРѕР№РґРµРЅР°, Р·Р°РїСЂРѕСЃ РёРјРµРЅРё Рё РїР°СЂРѕР»СЏ
 global $monthes;
 global $sr;
 global $pb;
 global $searchfield;
 require( "forum_before.inc" );
-//  echo "регистрация еще не пройдена";
+//  echo "СЂРµРіРёСЃС‚СЂР°С†РёСЏ РµС‰Рµ РЅРµ РїСЂРѕР№РґРµРЅР°";
 print "
 <tr><td>
-<p class=menu><a class=m href=\"useradd.php\">Регистрация</a></p>
+<p class=menu><a class=m href=\"useradd.php\">Р РµРіРёСЃС‚СЂР°С†РёСЏ</a></p>
 </td></tr>
 <tr>
 <td bgcolor=#D5DCE2><img src=\"images/spacer.gif\" height=2></td>
 </tr>
 <tr><td>
-<p class=menu>Авторизация</p>
+<p class=menu>РђРІС‚РѕСЂРёР·Р°С†РёСЏ</p>
 </td></tr>
 <tr>
 <td bgcolor=#D5DCE2>
 <table cellpadding=2 cellspacing=2 border=0>
 <tr>
 <form name=enter action=forum.php method=post >
-<td align=right><p class=logpass>Имя:</td>
+<td align=right><p class=logpass>РРјСЏ:</td>
 <td><input style=\"font-size:9pt\" type=text name=inputlogin size=10></td>
 </tr><tr>
-<td><p class=logpass>Пароль:</td>
+<td><p class=logpass>РџР°СЂРѕР»СЊ:</td>
 <td><input style=\"font-size:9pt\" type=password name=inputpass size=10></td>
 </tr><tr>
 <td> &nbsp;</td>
-<td align=center><input style=\"font-size:9pt\" type=submit value=\"вход\" onClick=\"return CheckEnter()\"></td></form>
+<td align=center><input style=\"font-size:9pt\" type=submit value=\"РІС…РѕРґ\" onClick=\"return CheckEnter()\"></td></form>
 </tr>
 </table>
 </td>
@@ -41,26 +41,104 @@ print "
 require( "forum_after.inc" );
 }
 
+function yesregistration($flf)
+{ // СЂРµРіРёСЃС‚СЂР°С†РёСЏ Р·Р°РІРµСЂС€РµРЅР° СѓСЃРїРµС€РЅРѕ
+global $UserLogNum;
+global $UserIdCookie;
+global $StartT;
+global $flcreatelog;
+global $tabusers;
+global $tablog;
+global $id;
+global $inputlogin;
+global $pback;
+global $username;
+global $monthes;
+global $sr;
+global $pb;
+global $searchfield;
+$path = ""; require( $path."forum_before.inc" );
+
+
+// РІСЂРµРјСЏ РїРѕСЃРµС‰РµРЅРёСЏ, С‡РёСЃР»Рѕ РїРѕСЃРµС‰РµРЅРёР№... -> РІ Р‘Р” 
+$ut=$StartT; 
+$T = date( "Y-m-d  H:i:s", $ut );
+$var="REMOTE_ADDR";
+$ip=getenv($var);
+
+
+   // РµСЃР»Рё РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕ СЂРµРіРёСЃС‚СЂР°С†РёСЏ, Р° РЅРµ refresh СЃС‚СЂР°РЅРёС†С‹ СЃ СЂРµРіРёСЃС‚СЂР°С†РёРµР№, 
+   // С‚Рѕ РѕР±РЅРѕРІР»СЏРµРј С‡РёСЃР»Рѕ РїРѕСЃРµС‰РµРЅРёР№ РІ Р±Рґ
+   $res  = db_query( "SELECT name,q_attantion from $tabusers where id=$id" );
+   list($username,$q_attantion) = db_fetch_row( $res );
+//   echo "РїСЂРµР¶РЅРµРµ С‡РёСЃР»Рѕ РїРѕСЃРµС‰РµРЅРёР№= $q_attantion<br>";
+//echo "$flf <br>";
+if ( $flf == 1) {
+   $q_attantion = $q_attantion + 1;
+   $res  = db_query("update $tabusers set q_attantion='$q_attantion',last_date='$T', ip='$ip' where id=$id");
+}
+   if ($flcreatelog)
+   {
+   $res  = db_query("insert into $tablog values('$id','$T',0,0,'$ip',0)");
+   $UserLogNum = db_insert_id();   // РЅРѕРјРµСЂ Р·Р°РїРёСЃРё РІ Р¶СѓСЂРЅР°Р»Рµ
+   }
+   //echo "UserLogNum=".$UserLogNum;
+
+print "
+<tr><td bgcolor=#D5DCE2>
+<p class=logpass align=center>РђРІС‚РѕСЂРёР·РѕРІР°РЅ<br>РїРѕСЃРµС‚РёС‚РµР»СЊ:<br><font color=#000000>$inputlogin</font></p>
+</td></tr>
+<tr>
+<td bgcolor=#D5DCE2><img src=\"images/spacer.gif\" height=5></td>
+</tr>
+<tr><td>
+<p class=menu><a class=m href=\"userupdate.php\">РР·РјРµРЅРµРЅРёРµ СЂРµРіРёСЃС‚СЂР°С†РёРѕРЅРЅС‹С… РґР°РЅРЅС‹С…</a></p>
+</td></tr>
+<tr>
+<td bgcolor=#D5DCE2><img src=\"images/spacer.gif\" height=2></td>
+</tr>
+<tr><td>
+<p class=menu><a class=m href=\"forum.php?out=1\">РћС‚РјРµРЅР° Р°РІС‚РѕСЂРёР·Р°С†РёРё</a></p>
+</td></tr>
+<tr>
+<td bgcolor=#D5DCE2><img src=\"images/spacer.gif\" height=2></td>
+</tr>
+";
+
+if ($UserIdCookie<2 )
+{
+print"
+<tr><td>
+<p class=menu><a class=m href=\"stat.php\">РЎС‚Р°С‚РёСЃС‚РёРєР°</a></p>
+</td></tr>
+<tr>
+<td bgcolor=#D5DCE2><img src=\"images/spacer.gif\" height=2></td>
+</tr>
+";
+}
+require( "forum_after.inc" );
+}
+
 if( !$inlib ) { include( "lib.inc" ); db_connect(); }
 
 include("auto.inc");
 $tabusers='users_tomsk';
-$tablog='log_tomsk';  // журнал
+$tablog='log_tomsk';  // Р¶СѓСЂРЅР°Р»
 $reg_true = false;
-$flcreatelog = false;  //по умолчанию - не делать новой записи в журнале 
-$access_code=0;   //по умолчанию - код доступа - пользовательский
+$flcreatelog = false;  //РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ - РЅРµ РґРµР»Р°С‚СЊ РЅРѕРІРѕР№ Р·Р°РїРёСЃРё РІ Р¶СѓСЂРЅР°Р»Рµ 
+$access_code=0;   //РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ - РєРѕРґ РґРѕСЃС‚СѓРїР° - РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёР№
 
 if (isset($out))
 { 
    closesession();
-   // стирание кук в головной директории
+   // СЃС‚РёСЂР°РЅРёРµ РєСѓРє РІ РіРѕР»РѕРІРЅРѕР№ РґРёСЂРµРєС‚РѕСЂРёРё
    echo "<SCRIPT LANGUAGE=JavaScript>location.href = \"close_forum.php\"; </SCRIPT>";
     noregistration();
 }
 else
 {
    if (isset($UserIdCookie))
-   {  // регистрация уже была успешно проведена
+   {  // СЂРµРіРёСЃС‚СЂР°С†РёСЏ СѓР¶Рµ Р±С‹Р»Р° СѓСЃРїРµС€РЅРѕ РїСЂРѕРІРµРґРµРЅР°
      $id = $UserIdCookie;
      $inputlogin = $UserLoginCookie;
      $StartT = $StartTimeCookie;
@@ -72,30 +150,30 @@ else
      {
 $inputlogin = trim($inputlogin);
 $inputpass = trim($inputpass);
-// Есть ли в базе регистрационное имя и пароль?
+// Р•СЃС‚СЊ Р»Рё РІ Р±Р°Р·Рµ СЂРµРіРёСЃС‚СЂР°С†РёРѕРЅРЅРѕРµ РёРјСЏ Рё РїР°СЂРѕР»СЊ?
 $usl='"'.$inputlogin.'"';
 $res  = db_query( "SELECT id,pass,name,last_date,q_attantion,access_code from $tabusers where login like ".$usl );
 $qlogin = db_num_rows( $res );
   if ($qlogin > 0) 
-  {  // user зарегистрирован, проверяем пароль
+  {  // user Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅ, РїСЂРѕРІРµСЂСЏРµРј РїР°СЂРѕР»СЊ
      list($id,$pass,$name,$last_date,$q_attantion,$access_code) = db_fetch_row( $res );
      if ($inputpass == $pass)
      {  
         $reg_true = true; 
      }
-     else {  //  неверный пароль
- echo "<SCRIPT LANGUAGE=\"JavaScript\" TYPE=\"text/javascript\"> alert(\"Пароль для пользователя ".$inputlogin." неверен\"); </SCRIPT>";
+     else {  //  РЅРµРІРµСЂРЅС‹Р№ РїР°СЂРѕР»СЊ
+ echo "<SCRIPT LANGUAGE=\"JavaScript\" TYPE=\"text/javascript\"> alert(\"РџР°СЂРѕР»СЊ РґР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ ".$inputlogin." РЅРµРІРµСЂРµРЅ\"); </SCRIPT>";
 
      }
   } 
-  else  {  // нет такого usera
- echo "<SCRIPT LANGUAGE=\"JavaScript\" TYPE=\"text/javascript\"> alert(\"Пользователь с именем ".$inputlogin." не зарегистрирован\"); </SCRIPT>";
+  else  {  // РЅРµС‚ С‚Р°РєРѕРіРѕ usera
+ echo "<SCRIPT LANGUAGE=\"JavaScript\" TYPE=\"text/javascript\"> alert(\"РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ РёРјРµРЅРµРј ".$inputlogin." РЅРµ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅ\"); </SCRIPT>";
   }
-//конец веточки повторного входа на страницу
+//РєРѕРЅРµС† РІРµС‚РѕС‡РєРё РїРѕРІС‚РѕСЂРЅРѕРіРѕ РІС…РѕРґР° РЅР° СЃС‚СЂР°РЅРёС†Сѓ
 }
 
 if ($reg_true)
-{ // регистрация успешно пройдена
+{ // СЂРµРіРёСЃС‚СЂР°С†РёСЏ СѓСЃРїРµС€РЅРѕ РїСЂРѕР№РґРµРЅР°
   $ut=time();
   $UserLogNum=0;
   $var="REMOTE_ADDR";
@@ -105,25 +183,25 @@ echo "<SCRIPT LANGUAGE=JavaScript>location.href = \"setcook_forum.php?id=$id&inp
 
 
   $StartT=$ut;
-   $flcreatelog=true;   // при регистрации сделать запись в журнале
+   $flcreatelog=true;   // РїСЂРё СЂРµРіРёСЃС‚СЂР°С†РёРё СЃРґРµР»Р°С‚СЊ Р·Р°РїРёСЃСЊ РІ Р¶СѓСЂРЅР°Р»Рµ
    yesregistration(1);
 
-//   ----------------------------- не получится, только через setcookie в другом модуле  
-//   $UserLogNumCookie = $UserLogNum; // запомнить в куке номер записи в журнале
+//   ----------------------------- РЅРµ РїРѕР»СѓС‡РёС‚СЃСЏ, С‚РѕР»СЊРєРѕ С‡РµСЂРµР· setcookie РІ РґСЂСѓРіРѕРј РјРѕРґСѓР»Рµ  
+//   $UserLogNumCookie = $UserLogNum; // Р·Р°РїРѕРјРЅРёС‚СЊ РІ РєСѓРєРµ РЅРѕРјРµСЂ Р·Р°РїРёСЃРё РІ Р¶СѓСЂРЅР°Р»Рµ
 
  echo "<SCRIPT LANGUAGE=JavaScript>location.href = \"savcook.php?n=$UserLogNum&pback=$pback\"; </SCRIPT>";
 
 }
-else { // регистрация еще не пройдена
+else { // СЂРµРіРёСЃС‚СЂР°С†РёСЏ РµС‰Рµ РЅРµ РїСЂРѕР№РґРµРЅР°
     noregistration();
 }
 
-} // конец else на проверку кука и уже проведенной ранее авторизации
+} // РєРѕРЅРµС† else РЅР° РїСЂРѕРІРµСЂРєСѓ РєСѓРєР° Рё СѓР¶Рµ РїСЂРѕРІРµРґРµРЅРЅРѕР№ СЂР°РЅРµРµ Р°РІС‚РѕСЂРёР·Р°С†РёРё
 
-} // конец else if по отсоединению пользователя
+} // РєРѕРЅРµС† else if РїРѕ РѕС‚СЃРѕРµРґРёРЅРµРЅРёСЋ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 
 include("sess_update.inc");
-updatesession();   // обновляем время сессии, если она была открыта
+updatesession();   // РѕР±РЅРѕРІР»СЏРµРј РІСЂРµРјСЏ СЃРµСЃСЃРёРё, РµСЃР»Рё РѕРЅР° Р±С‹Р»Р° РѕС‚РєСЂС‹С‚Р°
 
 ?>
 
