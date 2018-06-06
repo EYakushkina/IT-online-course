@@ -1,19 +1,17 @@
-
-
-<p class=ur1>ФОРУМ АИОР</p>
+<p class=ur1>Р¤РћР РЈРњ РђРРћР </p>
 
 <?
 
 global $UserAccCodeCookie;
 
-//echo "Пользователь=";
+//echo "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ=";
 //echo $UserIdCookie;
-//echo "Логин=";
+//echo "Р›РѕРіРёРЅ=";
 //echo $UserLoginCookie;
-//echo "Доступ=";
+//echo "Р”РѕСЃС‚СѓРї=";
 //echo $UserAccCodeCookie;
 
-$alenlimit = 15;  // макс длина имени автора в таблице списка тем
+$alenlimit = 15;  // РјР°РєСЃ РґР»РёРЅР° РёРјРµРЅРё Р°РІС‚РѕСЂР° РІ С‚Р°Р±Р»РёС†Рµ СЃРїРёСЃРєР° С‚РµРј
 
 $tabusers='users';
 $tabsubj='raee_subject';
@@ -21,7 +19,7 @@ $tabforum='raee_forum';
 
   
 if ((isset($UserIdCookie)) and !(isset($out)))
-{  // пользователь зарегистрирован
+{  // РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅ
    $id = $UserIdCookie;
    $acc = $UserAccCodeCookie;
    $res  = db_query("select name,work from $tabusers where id=$id");
@@ -38,7 +36,7 @@ if (!isset($pb)) {$pb=0;};
 $pe = $pb + $pagesize;
 $curpage = $pb/$pagesize + 1;
 
-//if (($p == '') & ($sp == '')) { $p=1;}   //не будем определять нач раздел Начальный раздел - первый
+//if (($p == '') & ($sp == '')) { $p=1;}   //РЅРµ Р±СѓРґРµРј РѕРїСЂРµРґРµР»СЏС‚СЊ РЅР°С‡ СЂР°Р·РґРµР» РќР°С‡Р°Р»СЊРЅС‹Р№ СЂР°Р·РґРµР» - РїРµСЂРІС‹Р№
 
 ?>
 
@@ -46,8 +44,8 @@ $curpage = $pb/$pagesize + 1;
 <form name="newsubj" method="post" action="subject_add.php">
 <table border=0 cellpadding=3 cellspacing=0>
 <tr>
-<td align=center>Название новой темы:</td>
-<td align=center>Ваше имя:</td>
+<td align=center>РќР°Р·РІР°РЅРёРµ РЅРѕРІРѕР№ С‚РµРјС‹:</td>
+<td align=center>Р’Р°С€Рµ РёРјСЏ:</td>
 <td>&nbsp;</td>
 </tr>
 <tr bgcolor=#F0F0F0>
@@ -67,7 +65,7 @@ else
 ?>
 <input type="hidden" name="s" value="<? echo $s;?>" >
 </td>
-<td align=center><input type=submit value="Создать новую тему" class="map" onClick="return CheckInnNewSubjForm()">
+<td align=center><input type=submit value="РЎРѕР·РґР°С‚СЊ РЅРѕРІСѓСЋ С‚РµРјСѓ" class="map" onClick="return CheckInnNewSubjForm()">
 </td>
 </tr>
 </table>
@@ -79,7 +77,7 @@ else
 <table border=0 cellpadding=0 cellspacing=0 width=98% bgcolor=#FFFFFF>
 <tr>
 <td valign=top>
-<!-- список тем форума -->
+<!-- СЃРїРёСЃРѕРє С‚РµРј С„РѕСЂСѓРјР° -->
 
 <?
 
@@ -89,7 +87,7 @@ $c=true;
 
 
 $parttit = '';
-// --------------- темы
+// --------------- С‚РµРјС‹
    $res  = db_query( "select * from $tabsubj where numsubject>0" );
    $rows = db_num_rows( $res );
    $allrows = $rows;
@@ -120,39 +118,39 @@ $subjauthor[$i] = $author;
 
      $res  = db_query( "select author, mdatetime from $tabforum where numsubject=$nums order by mdatetime desc");
 //     $res  = db_query( "select mdatetime from $tabforum where numsubject=$nums order by mdatetime desc");
-     $allmesinsubj = db_num_rows( $res ); // всего сообщений в теме
-     list($l_author,$mdatetime) = db_fetch_row( $res );  // автор и дата последнего сообщения в теме
-//     list($mdatetime) = db_fetch_row( $res );  // дата последнего сообщения в теме
+     $allmesinsubj = db_num_rows( $res ); // РІСЃРµРіРѕ СЃРѕРѕР±С‰РµРЅРёР№ РІ С‚РµРјРµ
+     list($l_author,$mdatetime) = db_fetch_row( $res );  // Р°РІС‚РѕСЂ Рё РґР°С‚Р° РїРѕСЃР»РµРґРЅРµРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ РІ С‚РµРјРµ
+//     list($mdatetime) = db_fetch_row( $res );  // РґР°С‚Р° РїРѕСЃР»РµРґРЅРµРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ РІ С‚РµРјРµ
 
      $allmess[$i] = $allmesinsubj;
 if ( $allmess[$i] > 0 ) 
 { $lastdate[$i] = $mdatetime; $lastauthor[$i] = $l_author;} else { $lastdate[$i] = $dcreate[$i]; $lastauthor[$i] = '';}
    }
 
-   arsort($lastdate);  // сортировка по дате посл. сообщения, в обр. порядке
+   arsort($lastdate);  // СЃРѕСЂС‚РёСЂРѕРІРєР° РїРѕ РґР°С‚Рµ РїРѕСЃР». СЃРѕРѕР±С‰РµРЅРёСЏ, РІ РѕР±СЂ. РїРѕСЂСЏРґРєРµ
    reset($lastdate);
    list( $n, $mdatetime ) = each( $lastdate );
-   if ($s == '') { $s = $n;};   //если текущая тема не определена, то первая тема по отсортированному списку
+   if ($s == '') { $s = $n;};   //РµСЃР»Рё С‚РµРєСѓС‰Р°СЏ С‚РµРјР° РЅРµ РѕРїСЂРµРґРµР»РµРЅР°, С‚Рѕ РїРµСЂРІР°СЏ С‚РµРјР° РїРѕ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕРјСѓ СЃРїРёСЃРєСѓ
    reset($lastdate);
 
-   // если была определена текущая тема $sr (возвратились из forum_s), 
-   // то вычисляем страницу, на которой находится эта тема
+   // РµСЃР»Рё Р±С‹Р»Р° РѕРїСЂРµРґРµР»РµРЅР° С‚РµРєСѓС‰Р°СЏ С‚РµРјР° $sr (РІРѕР·РІСЂР°С‚РёР»РёСЃСЊ РёР· forum_s), 
+   // С‚Рѕ РІС‹С‡РёСЃР»СЏРµРј СЃС‚СЂР°РЅРёС†Сѓ, РЅР° РєРѕС‚РѕСЂРѕР№ РЅР°С…РѕРґРёС‚СЃСЏ СЌС‚Р° С‚РµРјР°
 if (isset($sr)) {
    $n = 0;
    while ( list( $n, $numsubj ) = each( $num ) ) {
      if ($numsubj == $sr) {
-//       echo 'Номер для темы '.$numsubj.'='.$n; 
+//       echo 'РќРѕРјРµСЂ РґР»СЏ С‚РµРјС‹ '.$numsubj.'='.$n; 
        break;
      }
    }
      $number = $n;
-     // найден номер для темы, ищем страницу для этого номера
+     // РЅР°Р№РґРµРЅ РЅРѕРјРµСЂ РґР»СЏ С‚РµРјС‹, РёС‰РµРј СЃС‚СЂР°РЅРёС†Сѓ РґР»СЏ СЌС‚РѕРіРѕ РЅРѕРјРµСЂР°
      $ind = 0;
      while ( list( $n, $mdatetime ) = each( $lastdate ) ) {
        if ($n == $number) {break;}
        $ind = $ind+1;
      }
-//     echo 'Номер п/п в lastdate '.$ind; 
+//     echo 'РќРѕРјРµСЂ Рї/Рї РІ lastdate '.$ind; 
      reset($lastdate);
      
      $pb = floor($ind/$pagesize)*$pagesize;
@@ -169,18 +167,18 @@ echo "<table cellspacing=3 border=0 cellpadding=2 width=750>";
 echo "<tr><td colspan=5>";
 require( "s_navigate.inc" );
 echo "</td></tr>";
-echo "<tr bgcolor=#F0F0F0 align=center valign=middle><td width=110><p class=dbtit>Дата<br>обновления</p></td><td width=400><p class=dbtit>Тема</p></td><td width=60><p class=dbtit>Сооб-<br>щений<br>в теме</p></td><td width=110><p class=dbtit>Дата создания</p></td><td width=80><p class=dbtit>Автор темы</p></td></tr>";
-// с автором темы и сообщ, автора сообщ пока не ставим
-//echo "<tr bgcolor=#F0F0F0 align=center valign=middle><td width=110><p class=dbtit>Дата<br>обновления</p></td><td width=400><p class=dbtit>Тема</p></td><td width=60><p class=dbtit>Сооб-<br>щений<br>в теме</p></td><td width=80><p class=dbtit>Автор<br>последнего<br>сообщения</p></td><td width=110><p class=dbtit>Дата создания</p></td><td width=80><p class=dbtit>Автор темы</p></td></tr>";
-// без авторов темы и сообщ
-//echo "<tr bgcolor=#F0F0F0 align=center valign=middle><td width=110><p class=dbtit>Дата<br>обновления</p></td><td width=400><p class=dbtit>Тема</p></td><td width=80><p class=dbtit>Сообщений<br>в теме</p></td><td width=110><p class=dbtit>Дата создания</p></td></tr>";
+echo "<tr bgcolor=#F0F0F0 align=center valign=middle><td width=110><p class=dbtit>Р”Р°С‚Р°<br>РѕР±РЅРѕРІР»РµРЅРёСЏ</p></td><td width=400><p class=dbtit>РўРµРјР°</p></td><td width=60><p class=dbtit>РЎРѕРѕР±-<br>С‰РµРЅРёР№<br>РІ С‚РµРјРµ</p></td><td width=110><p class=dbtit>Р”Р°С‚Р° СЃРѕР·РґР°РЅРёСЏ</p></td><td width=80><p class=dbtit>РђРІС‚РѕСЂ С‚РµРјС‹</p></td></tr>";
+// СЃ Р°РІС‚РѕСЂРѕРј С‚РµРјС‹ Рё СЃРѕРѕР±С‰, Р°РІС‚РѕСЂР° СЃРѕРѕР±С‰ РїРѕРєР° РЅРµ СЃС‚Р°РІРёРј
+//echo "<tr bgcolor=#F0F0F0 align=center valign=middle><td width=110><p class=dbtit>Р”Р°С‚Р°<br>РѕР±РЅРѕРІР»РµРЅРёСЏ</p></td><td width=400><p class=dbtit>РўРµРјР°</p></td><td width=60><p class=dbtit>РЎРѕРѕР±-<br>С‰РµРЅРёР№<br>РІ С‚РµРјРµ</p></td><td width=80><p class=dbtit>РђРІС‚РѕСЂ<br>РїРѕСЃР»РµРґРЅРµРіРѕ<br>СЃРѕРѕР±С‰РµРЅРёСЏ</p></td><td width=110><p class=dbtit>Р”Р°С‚Р° СЃРѕР·РґР°РЅРёСЏ</p></td><td width=80><p class=dbtit>РђРІС‚РѕСЂ С‚РµРјС‹</p></td></tr>";
+// Р±РµР· Р°РІС‚РѕСЂРѕРІ С‚РµРјС‹ Рё СЃРѕРѕР±С‰
+//echo "<tr bgcolor=#F0F0F0 align=center valign=middle><td width=110><p class=dbtit>Р”Р°С‚Р°<br>РѕР±РЅРѕРІР»РµРЅРёСЏ</p></td><td width=400><p class=dbtit>РўРµРјР°</p></td><td width=80><p class=dbtit>РЎРѕРѕР±С‰РµРЅРёР№<br>РІ С‚РµРјРµ</p></td><td width=110><p class=dbtit>Р”Р°С‚Р° СЃРѕР·РґР°РЅРёСЏ</p></td></tr>";
 
 
       if ($code == $p) {echo "<tr bgcolor=#D3E6FF>"; $parttit = $namepart;} else {echo "<tr>";}
 
-   // вывод на страницу в порядке, определенном массивом lastdate,
-   // но только тех тем, которые относятся к текущей странице, 
-   // то есть начиная c pb
+   // РІС‹РІРѕРґ РЅР° СЃС‚СЂР°РЅРёС†Сѓ РІ РїРѕСЂСЏРґРєРµ, РѕРїСЂРµРґРµР»РµРЅРЅРѕРј РјР°СЃСЃРёРІРѕРј lastdate,
+   // РЅРѕ С‚РѕР»СЊРєРѕ С‚РµС… С‚РµРј, РєРѕС‚РѕСЂС‹Рµ РѕС‚РЅРѕСЃСЏС‚СЃСЏ Рє С‚РµРєСѓС‰РµР№ СЃС‚СЂР°РЅРёС†Рµ, 
+   // С‚Рѕ РµСЃС‚СЊ РЅР°С‡РёРЅР°СЏ c pb
    $ind = 0;
    while ( list( $n, $mdatetime ) = each( $lastdate ) ) {
      if (($ind >= $pb) & ($ind < $pe)) {
@@ -192,7 +190,7 @@ echo "<tr bgcolor=#F0F0F0 align=center valign=middle><td width=110><p class=dbti
      echo "<td><p class=ur2r><a href='forum_s.phtml?s=$num[$n]&pback=$pback'>$subj[$n]</a></td>";
 
      echo "<td><p style=color:#700000 align=center><b>$allmess[$n]</b></td>";
-// автор последнего сообщения, пока не ставим
+// Р°РІС‚РѕСЂ РїРѕСЃР»РµРґРЅРµРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ, РїРѕРєР° РЅРµ СЃС‚Р°РІРёРј
 //  if (strlen($lastauthor[$n]) > $alenlimit) { $lastauthor[$n] = substr($lastauthor[$n],0,14).'...'; } 
 //   echo "<td><p>".$lastauthor[$n]."</p></td>";
      echo "<td align=center><p>".substr($dcreate[$n],0,16)."</p></td>";
@@ -203,7 +201,7 @@ echo "<tr bgcolor=#F0F0F0 align=center valign=middle><td width=110><p class=dbti
      $ind = $ind+1;
    }
 
-// ----------- темы - end
+// ----------- С‚РµРјС‹ - end
 
 
 if ( $allrows > $pagesize ) {
